@@ -29,24 +29,25 @@
         private void InitializeComponent()
         {
             statusStrip1 = new StatusStrip();
-            delete = new Button();
-            edit = new Button();
-            add = new Button();
-            searchTextBox = new TextBox();
+            deleteBtn = new Button();
+            editBtn = new Button();
+            addBtn = new Button();
+            searchTextbox = new TextBox();
             search = new Button();
             saveFileDialog1 = new SaveFileDialog();
-            Name = new ListBox();
-            Category = new ListBox();
-            nameAdd = new TextBox();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            richTextBox1 = new RichTextBox();
+            categoryListbox = new ListBox();
+            nameTextbox = new TextBox();
+            structureTextbox = new TextBox();
+            categoryTextbox = new TextBox();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
             label4 = new Label();
-            save = new Button();
-            open = new Button();
+            saveBtn = new Button();
+            openBtn = new Button();
+            nameListbox = new ListBox();
+            definitionTextbox = new TextBox();
+            saveFileDialog2 = new SaveFileDialog();
             SuspendLayout();
             // 
             // statusStrip1
@@ -57,39 +58,42 @@
             statusStrip1.TabIndex = 0;
             statusStrip1.Text = "statusStrip1";
             // 
-            // delete
+            // deleteBtn
             // 
-            delete.Location = new Point(443, 24);
-            delete.Name = "delete";
-            delete.Size = new Size(75, 23);
-            delete.TabIndex = 2;
-            delete.Text = "Delete";
-            delete.UseVisualStyleBackColor = true;
+            deleteBtn.Location = new Point(443, 24);
+            deleteBtn.Name = "deleteBtn";
+            deleteBtn.Size = new Size(75, 23);
+            deleteBtn.TabIndex = 2;
+            deleteBtn.Text = "Delete";
+            deleteBtn.UseVisualStyleBackColor = true;
+            deleteBtn.Click += deleteBtn_Click;
             // 
-            // edit
+            // editBtn
             // 
-            edit.Location = new Point(362, 24);
-            edit.Name = "edit";
-            edit.Size = new Size(75, 23);
-            edit.TabIndex = 3;
-            edit.Text = "Edit";
-            edit.UseVisualStyleBackColor = true;
+            editBtn.Location = new Point(362, 24);
+            editBtn.Name = "editBtn";
+            editBtn.Size = new Size(75, 23);
+            editBtn.TabIndex = 3;
+            editBtn.Text = "Edit";
+            editBtn.UseVisualStyleBackColor = true;
             // 
-            // add
+            // addBtn
             // 
-            add.Location = new Point(281, 24);
-            add.Name = "add";
-            add.Size = new Size(75, 23);
-            add.TabIndex = 4;
-            add.Text = "Add";
-            add.UseVisualStyleBackColor = true;
+            addBtn.AccessibleName = "Add";
+            addBtn.Location = new Point(281, 24);
+            addBtn.Name = "addBtn";
+            addBtn.Size = new Size(75, 23);
+            addBtn.TabIndex = 4;
+            addBtn.Text = "Add";
+            addBtn.UseVisualStyleBackColor = true;
+            addBtn.Click += add_Click;
             // 
-            // searchTextBox
+            // searchTextbox
             // 
-            searchTextBox.Location = new Point(31, 24);
-            searchTextBox.Name = "searchTextBox";
-            searchTextBox.Size = new Size(144, 23);
-            searchTextBox.TabIndex = 9;
+            searchTextbox.Location = new Point(31, 24);
+            searchTextbox.Name = "searchTextbox";
+            searchTextbox.Size = new Size(144, 23);
+            searchTextbox.TabIndex = 9;
             // 
             // search
             // 
@@ -99,55 +103,39 @@
             search.TabIndex = 10;
             search.Text = "Search";
             search.UseVisualStyleBackColor = true;
+            search.Click += search_Click;
             // 
-            // Name
+            // categoryListbox
             // 
-            Name.FormattingEnabled = true;
-            Name.ItemHeight = 15;
-            Name.Location = new Point(31, 53);
-            Name.Name = "Name";
-            Name.Size = new Size(108, 259);
-            Name.TabIndex = 14;
+            categoryListbox.FormattingEnabled = true;
+            categoryListbox.ItemHeight = 15;
+            categoryListbox.Location = new Point(138, 53);
+            categoryListbox.Name = "categoryListbox";
+            categoryListbox.Size = new Size(108, 259);
+            categoryListbox.TabIndex = 15;
+            categoryListbox.SelectedIndexChanged += Category_SelectedIndexChanged;
             // 
-            // Category
+            // nameTextbox
             // 
-            Category.FormattingEnabled = true;
-            Category.ItemHeight = 15;
-            Category.Location = new Point(138, 53);
-            Category.Name = "Category";
-            Category.Size = new Size(108, 259);
-            Category.TabIndex = 15;
+            nameTextbox.Location = new Point(353, 53);
+            nameTextbox.Name = "nameTextbox";
+            nameTextbox.Size = new Size(165, 23);
+            nameTextbox.TabIndex = 16;
             // 
-            // nameAdd
+            // structureTextbox
             // 
-            nameAdd.Location = new Point(353, 53);
-            nameAdd.Name = "nameAdd";
-            nameAdd.Size = new Size(165, 23);
-            nameAdd.TabIndex = 16;
+            structureTextbox.Location = new Point(353, 82);
+            structureTextbox.Name = "structureTextbox";
+            structureTextbox.Size = new Size(165, 23);
+            structureTextbox.TabIndex = 17;
+            structureTextbox.TextChanged += textBox1_TextChanged_1;
             // 
-            // textBox1
+            // categoryTextbox
             // 
-            textBox1.Location = new Point(353, 82);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(165, 23);
-            textBox1.TabIndex = 17;
-            textBox1.TextChanged += textBox1_TextChanged_1;
-            // 
-            // textBox2
-            // 
-            textBox2.Location = new Point(353, 111);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(165, 23);
-            textBox2.TabIndex = 18;
-            // 
-            // richTextBox1
-            // 
-            richTextBox1.Location = new Point(281, 161);
-            richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(237, 122);
-            richTextBox1.TabIndex = 19;
-            richTextBox1.Text = "";
-            richTextBox1.TextChanged += richTextBox1_TextChanged;
+            categoryTextbox.Location = new Point(353, 111);
+            categoryTextbox.Name = "categoryTextbox";
+            categoryTextbox.Size = new Size(165, 23);
+            categoryTextbox.TabIndex = 18;
             // 
             // label1
             // 
@@ -187,48 +175,68 @@
             label4.Text = "Definition";
             label4.Click += label4_Click;
             // 
-            // save
+            // saveBtn
             // 
-            save.Location = new Point(443, 291);
-            save.Name = "save";
-            save.Size = new Size(75, 23);
-            save.TabIndex = 24;
-            save.Text = "Save";
-            save.UseVisualStyleBackColor = true;
+            saveBtn.Location = new Point(443, 291);
+            saveBtn.Name = "saveBtn";
+            saveBtn.Size = new Size(75, 23);
+            saveBtn.TabIndex = 24;
+            saveBtn.Text = "Save";
+            saveBtn.UseVisualStyleBackColor = true;
             // 
-            // open
+            // openBtn
             // 
-            open.Location = new Point(362, 291);
-            open.Name = "open";
-            open.Size = new Size(75, 23);
-            open.TabIndex = 25;
-            open.Text = "Open";
-            open.UseVisualStyleBackColor = true;
+            openBtn.Location = new Point(362, 291);
+            openBtn.Name = "openBtn";
+            openBtn.Size = new Size(75, 23);
+            openBtn.TabIndex = 25;
+            openBtn.Text = "Open";
+            openBtn.UseVisualStyleBackColor = true;
+            // 
+            // nameListbox
+            // 
+            nameListbox.FormattingEnabled = true;
+            nameListbox.ItemHeight = 15;
+            nameListbox.Location = new Point(31, 53);
+            nameListbox.Name = "nameListbox";
+            nameListbox.Size = new Size(108, 259);
+            nameListbox.TabIndex = 27;
+            nameListbox.SelectedIndexChanged += nameListbox_SelectedIndexChanged;
+            // 
+            // definitionTextbox
+            // 
+            definitionTextbox.Location = new Point(281, 158);
+            definitionTextbox.Multiline = true;
+            definitionTextbox.Name = "definitionTextbox";
+            definitionTextbox.Size = new Size(237, 122);
+            definitionTextbox.TabIndex = 26;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(552, 339);
-            Controls.Add(open);
-            Controls.Add(save);
+            Controls.Add(nameListbox);
+            Controls.Add(definitionTextbox);
+            Controls.Add(openBtn);
+            Controls.Add(saveBtn);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(richTextBox1);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
-            Controls.Add(nameAdd);
-            Controls.Add(Category);
-            Controls.Add(Name);
+            Controls.Add(categoryTextbox);
+            Controls.Add(structureTextbox);
+            Controls.Add(nameTextbox);
+            Controls.Add(categoryListbox);
             Controls.Add(search);
-            Controls.Add(searchTextBox);
-            Controls.Add(add);
-            Controls.Add(edit);
-            Controls.Add(delete);
+            Controls.Add(searchTextbox);
+            Controls.Add(addBtn);
+            Controls.Add(editBtn);
+            Controls.Add(deleteBtn);
             Controls.Add(statusStrip1);
-            Text = "Category Name";
+            Name = "Form1";
+            Text = "Wiki Devel";
+            Load += Form1_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -236,25 +244,27 @@
         #endregion
 
         private StatusStrip statusStrip1;
-        private Button edit;
-        private Button delete;
+        private Button editBtn;
+        private Button deleteBtn;
         private Button edot;
-        private Button add;
+        public Button addBtn;
         private ListBox listBox2;
-        private TextBox searchTextBox;
+        private TextBox searchTextbox;
         private Button search;
         private SaveFileDialog saveFileDialog1;
-        private ListBox Name;
-        private ListBox Category;
-        private TextBox nameAdd;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private RichTextBox richTextBox1;
+        private ListBox name;
+        private ListBox categoryListbox;
+        private TextBox nameTextbox;
+        private TextBox structureTextbox;
+        private TextBox categoryTextbox;
         private Label label1;
         private Label label2;
         private Label label3;
         private Label label4;
-        private Button save;
-        private Button open;
+        private Button saveBtn;
+        private Button openBtn;
+        private ListBox nameListbox;
+        private TextBox definitionTextbox;
+        private SaveFileDialog saveFileDialog2;
     }
 }

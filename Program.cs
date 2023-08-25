@@ -1,4 +1,5 @@
-using System.Data;
+using System;
+using System.Windows.Forms;
 
 namespace Wiki_devel
 {
@@ -7,8 +8,8 @@ namespace Wiki_devel
         [STAThread]
         public static void Main()
         {
-            var data = new Data();
-            Console.WriteLine(data.dataSet);
+            Data data = new Data();
+
 
 
             ApplicationConfiguration.Initialize();
@@ -17,13 +18,20 @@ namespace Wiki_devel
     }
     public class Data
     {
-        static int row = 12;
-        static int column = 4;
-        public string[] dataSet = new string[12]
-        {
-          "one", "two", "three", "four", "five", "six",
-          "seven", "eight", "nine", "ten", "eleven", "twelve" 
-        };
+        //Create a global 2D string array, use static variables for the dimensions [12,4]
+        static int rows = 12;
+        static int columns = 4; // Name, Category, Structure, Definition.
+
+        public string[,] dataSet = new string[rows, columns];
+
 
     }
+    public class AddEditDelete
+    {
+
+    }
+
+
+       
 }
+// Create an add button that will store the information rom the 4 text boxes into the 2D array
