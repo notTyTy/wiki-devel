@@ -48,6 +48,8 @@
             nameListbox = new ListBox();
             definitionTextbox = new TextBox();
             saveFileDialog2 = new SaveFileDialog();
+            label5 = new Label();
+            label6 = new Label();
             SuspendLayout();
             // 
             // statusStrip1
@@ -56,7 +58,7 @@
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(552, 22);
             statusStrip1.TabIndex = 0;
-            statusStrip1.Text = "statusStrip1";
+            statusStrip1.Text = "statusStrip";
             // 
             // deleteBtn
             // 
@@ -76,6 +78,7 @@
             editBtn.TabIndex = 3;
             editBtn.Text = "Edit";
             editBtn.UseVisualStyleBackColor = true;
+            editBtn.Click += editBtn_Click;
             // 
             // addBtn
             // 
@@ -94,6 +97,7 @@
             searchTextbox.Name = "searchTextbox";
             searchTextbox.Size = new Size(144, 23);
             searchTextbox.TabIndex = 9;
+            searchTextbox.DoubleClick += searchTextbox_DoubleClick;
             // 
             // search
             // 
@@ -103,17 +107,15 @@
             search.TabIndex = 10;
             search.Text = "Search";
             search.UseVisualStyleBackColor = true;
-            search.Click += search_Click;
             // 
             // categoryListbox
             // 
             categoryListbox.FormattingEnabled = true;
             categoryListbox.ItemHeight = 15;
-            categoryListbox.Location = new Point(138, 53);
+            categoryListbox.Location = new Point(138, 68);
             categoryListbox.Name = "categoryListbox";
-            categoryListbox.Size = new Size(108, 259);
+            categoryListbox.Size = new Size(108, 244);
             categoryListbox.TabIndex = 15;
-            categoryListbox.SelectedIndexChanged += Category_SelectedIndexChanged;
             // 
             // nameTextbox
             // 
@@ -128,7 +130,6 @@
             structureTextbox.Name = "structureTextbox";
             structureTextbox.Size = new Size(165, 23);
             structureTextbox.TabIndex = 17;
-            structureTextbox.TextChanged += textBox1_TextChanged_1;
             // 
             // categoryTextbox
             // 
@@ -145,7 +146,6 @@
             label1.Size = new Size(39, 15);
             label1.TabIndex = 20;
             label1.Text = "Name";
-            label1.Click += label1_Click;
             // 
             // label2
             // 
@@ -173,7 +173,6 @@
             label4.Size = new Size(59, 15);
             label4.TabIndex = 23;
             label4.Text = "Definition";
-            label4.Click += label4_Click;
             // 
             // saveBtn
             // 
@@ -197,9 +196,9 @@
             // 
             nameListbox.FormattingEnabled = true;
             nameListbox.ItemHeight = 15;
-            nameListbox.Location = new Point(31, 53);
+            nameListbox.Location = new Point(31, 68);
             nameListbox.Name = "nameListbox";
-            nameListbox.Size = new Size(108, 259);
+            nameListbox.Size = new Size(108, 244);
             nameListbox.TabIndex = 27;
             nameListbox.SelectedIndexChanged += nameListbox_SelectedIndexChanged;
             // 
@@ -211,11 +210,31 @@
             definitionTextbox.Size = new Size(237, 122);
             definitionTextbox.TabIndex = 26;
             // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(31, 50);
+            label5.Name = "label5";
+            label5.Size = new Size(39, 15);
+            label5.TabIndex = 28;
+            label5.Text = "Name";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(138, 50);
+            label6.Name = "label6";
+            label6.Size = new Size(55, 15);
+            label6.TabIndex = 29;
+            label6.Text = "Category";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(552, 339);
+            Controls.Add(label6);
+            Controls.Add(label5);
             Controls.Add(nameListbox);
             Controls.Add(definitionTextbox);
             Controls.Add(openBtn);
@@ -236,7 +255,6 @@
             Controls.Add(statusStrip1);
             Name = "Form1";
             Text = "Wiki Devel";
-            Load += Form1_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -246,13 +264,10 @@
         private StatusStrip statusStrip1;
         private Button editBtn;
         private Button deleteBtn;
-        private Button edot;
         public Button addBtn;
-        private ListBox listBox2;
         private TextBox searchTextbox;
         private Button search;
         private SaveFileDialog saveFileDialog1;
-        private ListBox name;
         private ListBox categoryListbox;
         private TextBox nameTextbox;
         private TextBox structureTextbox;
@@ -266,5 +281,7 @@
         private ListBox nameListbox;
         private TextBox definitionTextbox;
         private SaveFileDialog saveFileDialog2;
+        private Label label5;
+        private Label label6;
     }
 }

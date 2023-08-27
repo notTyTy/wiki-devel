@@ -22,12 +22,8 @@ namespace Wiki_devel
         static int rows = 12;
         static int columns = 4; // Name, Category, Structure, Definition.
 
-        public string[,] dataSet = new string[rows, columns];
+        public string?[,] dataSet = new string?[rows, columns];
 
-
-    }
-    public class AddEditDelete
-    {
 
     }
 
