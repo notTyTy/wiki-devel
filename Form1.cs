@@ -107,21 +107,28 @@ namespace Wiki_devel
         // 9.3 Create an Edit button that will allow the user to modify any information from the four text boxes into the 2D array
         private void editBtn_Click(object sender, EventArgs e)
         {
-            int nameIndex = nameListbox.SelectedIndex;
+            if (nameListbox.SelectedIndex < 0)
+            {
+                MessageBox.Show("There is no data selected!", "Edit error", MessageBoxButtons.OK);
+            }
+            else
+            {
+                int nameIndex = nameListbox.SelectedIndex;
 
-            data.dataSet[nameIndex, 0] = nameTextbox.Text;
-            data.dataSet[nameIndex, 1] = categoryTextbox.Text;
-            data.dataSet[nameIndex, 2] = structureTextbox.Text;
-            data.dataSet[nameIndex, 3] = definitionTextbox.Text;
+                data.dataSet[nameIndex, 0] = nameTextbox.Text;
+                data.dataSet[nameIndex, 1] = categoryTextbox.Text;
+                data.dataSet[nameIndex, 2] = structureTextbox.Text;
+                data.dataSet[nameIndex, 3] = definitionTextbox.Text;
 
-            // 9.8 Create a display method that will show the following information in a listview, Name and category
-            nameListbox.Items[nameIndex] = nameTextbox.Text.ToLower();
-            categoryListbox.Items[nameIndex] = categoryTextbox.Text.ToLower();
+                // 9.8 Create a display method that will show the following information in a listview, Name and category
+                nameListbox.Items[nameIndex] = nameTextbox.Text.ToLower();
+                categoryListbox.Items[nameIndex] = categoryTextbox.Text.ToLower();
 
-            nameTextbox.Text = "";
-            categoryTextbox.Text = "";
-            structureTextbox.Text = "";
-            definitionTextbox.Text = "";
+                nameTextbox.Text = "";
+                categoryTextbox.Text = "";
+                structureTextbox.Text = "";
+                definitionTextbox.Text = "";
+            }
         }
 
         // 9.5 Create a clear method to clear the four text boxes so a new definition can be added
