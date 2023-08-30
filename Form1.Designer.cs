@@ -50,6 +50,7 @@
             saveFileDialog2 = new SaveFileDialog();
             label5 = new Label();
             label6 = new Label();
+            clearField = new Button();
             SuspendLayout();
             // 
             // statusStrip1
@@ -107,6 +108,7 @@
             search.TabIndex = 10;
             search.Text = "Search";
             search.UseVisualStyleBackColor = true;
+            search.Click += search_Click;
             // 
             // categoryListbox
             // 
@@ -182,6 +184,7 @@
             saveBtn.TabIndex = 24;
             saveBtn.Text = "Save";
             saveBtn.UseVisualStyleBackColor = true;
+            saveBtn.Click += saveBtn_Click;
             // 
             // openBtn
             // 
@@ -191,6 +194,7 @@
             openBtn.TabIndex = 25;
             openBtn.Text = "Open";
             openBtn.UseVisualStyleBackColor = true;
+            openBtn.Click += openBtn_Click;
             // 
             // nameListbox
             // 
@@ -228,11 +232,22 @@
             label6.TabIndex = 29;
             label6.Text = "Category";
             // 
+            // clearField
+            // 
+            clearField.Location = new Point(281, 291);
+            clearField.Name = "clearField";
+            clearField.Size = new Size(75, 23);
+            clearField.TabIndex = 30;
+            clearField.Text = "Clear Fields";
+            clearField.UseVisualStyleBackColor = true;
+            clearField.Click += clearField_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(552, 339);
+            Controls.Add(clearField);
             Controls.Add(label6);
             Controls.Add(label5);
             Controls.Add(nameListbox);
@@ -283,5 +298,6 @@
         private SaveFileDialog saveFileDialog2;
         private Label label5;
         private Label label6;
+        private Button clearField;
     }
 }

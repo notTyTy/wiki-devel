@@ -1,5 +1,10 @@
 using System;
 using System.Windows.Forms;
+using System.IO;
+using System.Text;
+using System.Reflection.Metadata;
+using System.Security.Cryptography.X509Certificates;
+using System.Data;
 
 namespace Wiki_devel
 {
@@ -18,16 +23,33 @@ namespace Wiki_devel
     }
     public class Data
     {
-        //Create a global 2D string array, use static variables for the dimensions [12,4]
         static int rows = 12;
-        static int columns = 4; // Name, Category, Structure, Definition.
-
-        public string?[,] dataSet = new string?[rows, columns];
-
-
+        static int columns = 4;
+        public string[,] dataSet = new string[rows, columns];
     }
 
+        /*  public static void BubbleSort(string[,] dataSet, int sortByColumn)
+ {
+     int arraySize = 12;
+     bool swapped;
 
-       
+     do
+     {
+         swapped = false;
+
+         for (int i = 1; i < arraySize; i++)
+         {
+             if (string.Compare(dataSet[i - 1, 0], dataSet[i, 0]) > 0)
+             {
+                 for (int j = 0; j < dataSet.GetLength(1); j++)
+                 {
+                     string temp = dataSet[i - 1, j];
+                     dataSet[i - 1, j] = dataSet[i, j];
+                     dataSet[i, j] = temp;
+                 }
+             }
+         } 
+     } while (swapped);
+
+ } */
 }
-// Create an add button that will store the information rom the 4 text boxes into the 2D array
