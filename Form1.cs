@@ -1,4 +1,5 @@
 using System.CodeDom.Compiler;
+using System.Diagnostics.Eventing.Reader;
 using System.Security.Cryptography.X509Certificates;
 namespace Wiki_devel
 {
@@ -40,21 +41,21 @@ namespace Wiki_devel
                         dataSet[i, 1] = categoryTextbox.Text; // Adds category data to the array
                         dataSet[i, 2] = structureTextbox.Text; // Adds structure data to the array
                         dataSet[i, 3] = definitionTextbox.Text; // Adds definition data to the array
+
+
                         //9.8 Create a display method that will show the following information in a listview, Name and category
-                        if (dataSet[i, 0 ] == "~")
-                        {
-                            continue;
-                        }
-
-
-
                         ListViewItem item = new ListViewItem(dataSet[i, 0]);
                         item.SubItems.Add(dataSet[i, 1]);
                         nameListview.Items.Add(item);
-
-                        bubbleSort();
                         nameListview.Refresh();
 
+
+
+
+                        if (dataSet[i, 0] == "~")
+                        {
+                            continue;
+                        }
                         // Resets the Textbox fields so new data can be added
                         nameTextbox.Clear();
                         categoryTextbox.Clear();
@@ -119,8 +120,6 @@ namespace Wiki_devel
                             dataSet[selectedIndex, 1] = "~";
                             dataSet[selectedIndex, 2] = "~";
                             dataSet[selectedIndex, 3] = "~";
-
-                            bubbleSort();
                         }
                         break;
                     case DialogResult.No:
@@ -151,7 +150,6 @@ namespace Wiki_devel
                 // 9.8 Create a display method that will show the following information in a listview, Name and category
                 nameListview.Items[nameIndex].Text = dataSet[nameIndex, 0];
 
-                bubbleSort();
 
                 nameTextbox.Text = "";
                 categoryTextbox.Text = "";
@@ -180,7 +178,6 @@ namespace Wiki_devel
             structureTextbox.Text = "";
             definitionTextbox.Text = "";
             nameListview.SelectedItems.Clear(); // Deselects current value in the nameListview
-
         }
         // 9.10 Create a save button so information from the 2D array can be written into a binary file called definitions.dat
         // which is sorted by Name, ensure the user has the option to save it as an alternative file.
@@ -258,7 +255,6 @@ namespace Wiki_devel
 
                     br.Close();
                     fs.Close();
-                    bubbleSort();
                 }
 
                 catch (Exception ex)
@@ -273,6 +269,12 @@ namespace Wiki_devel
         {
             if (!string.IsNullOrEmpty(searchTextbox.Text) && searchTextbox.Text != "~")
             {
+                nameTextbox.Clear();
+                categoryTextbox.Clear();
+                structureTextbox.Clear();
+                definitionTextbox.Clear();
+
+                bubbleSort();
                 bool found = false;
                 int min = 0;
                 int max = 11;
@@ -280,9 +282,9 @@ namespace Wiki_devel
                 string key = searchTextbox.Text;
 
 
-                while (min <= max)
+                while (!found && min <= max)
                 {
-                    int mid = ((min + max) / 2);
+                    int mid = (min + max) / 2;
                     if (key == dataSet[mid, 0])
                     {
                         found = true;
@@ -292,24 +294,22 @@ namespace Wiki_devel
                         definitionTextbox.Text = dataSet[mid, 3];
                         break;
                     }
-                    else if (key.CompareTo(dataSet[mid, 0]) < 0)
+                    else if (key.CompareTo(dataSet[mid, 0]) > 0)
                     {
-                        max = mid - 1;
+                        min = mid + 1;
+
                     }
                     else
                     {
-                        min = mid + 1;
+                        max = mid - 1;
                     }
                 }
                 if (!found)
                 {
                     MessageBox.Show("Value not found", "Not Found");
+                    return;
                 }
                 searchTextbox.Clear();
-            }
-            else
-            {
-                MessageBox.Show("Value not found", "Not Found");
             }
         }
 
