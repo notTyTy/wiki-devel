@@ -35,7 +35,6 @@
             searchTextbox = new TextBox();
             search = new Button();
             saveFileDialog1 = new SaveFileDialog();
-            categoryListbox = new ListBox();
             nameTextbox = new TextBox();
             structureTextbox = new TextBox();
             categoryTextbox = new TextBox();
@@ -45,12 +44,12 @@
             label4 = new Label();
             saveBtn = new Button();
             openBtn = new Button();
-            nameListbox = new ListBox();
             definitionTextbox = new TextBox();
             saveFileDialog2 = new SaveFileDialog();
-            label5 = new Label();
-            label6 = new Label();
             clearField = new Button();
+            nameListview = new ListView();
+            columnHeader1 = new ColumnHeader();
+            columnHeader2 = new ColumnHeader();
             SuspendLayout();
             // 
             // statusStrip1
@@ -79,7 +78,7 @@
             editBtn.TabIndex = 3;
             editBtn.Text = "Edit";
             editBtn.UseVisualStyleBackColor = true;
-            editBtn.Click += editBtn_Click;
+            editBtn.Click += editBtn_Click_1;
             // 
             // addBtn
             // 
@@ -109,15 +108,6 @@
             search.Text = "Search";
             search.UseVisualStyleBackColor = true;
             search.Click += search_Click;
-            // 
-            // categoryListbox
-            // 
-            categoryListbox.FormattingEnabled = true;
-            categoryListbox.ItemHeight = 15;
-            categoryListbox.Location = new Point(138, 68);
-            categoryListbox.Name = "categoryListbox";
-            categoryListbox.Size = new Size(108, 244);
-            categoryListbox.TabIndex = 15;
             // 
             // nameTextbox
             // 
@@ -196,16 +186,6 @@
             openBtn.UseVisualStyleBackColor = true;
             openBtn.Click += openBtn_Click;
             // 
-            // nameListbox
-            // 
-            nameListbox.FormattingEnabled = true;
-            nameListbox.ItemHeight = 15;
-            nameListbox.Location = new Point(31, 68);
-            nameListbox.Name = "nameListbox";
-            nameListbox.Size = new Size(108, 244);
-            nameListbox.TabIndex = 27;
-            nameListbox.SelectedIndexChanged += nameListbox_SelectedIndexChanged;
-            // 
             // definitionTextbox
             // 
             definitionTextbox.Location = new Point(281, 158);
@@ -213,24 +193,6 @@
             definitionTextbox.Name = "definitionTextbox";
             definitionTextbox.Size = new Size(237, 122);
             definitionTextbox.TabIndex = 26;
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(31, 50);
-            label5.Name = "label5";
-            label5.Size = new Size(39, 15);
-            label5.TabIndex = 28;
-            label5.Text = "Name";
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Location = new Point(138, 50);
-            label6.Name = "label6";
-            label6.Size = new Size(55, 15);
-            label6.TabIndex = 29;
-            label6.Text = "Category";
             // 
             // clearField
             // 
@@ -242,15 +204,39 @@
             clearField.UseVisualStyleBackColor = true;
             clearField.Click += clearField_Click;
             // 
+            // nameListview
+            // 
+            nameListview.Activation = ItemActivation.OneClick;
+            nameListview.AllowDrop = true;
+            nameListview.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2 });
+            nameListview.HideSelection = true;
+            nameListview.LabelWrap = false;
+            nameListview.Location = new Point(31, 56);
+            nameListview.MultiSelect = false;
+            nameListview.Name = "nameListview";
+            nameListview.Size = new Size(195, 258);
+            nameListview.TabIndex = 31;
+            nameListview.UseCompatibleStateImageBehavior = false;
+            nameListview.View = View.Details;
+            nameListview.SelectedIndexChanged += nameListview_SelectedIndexChanged;
+            // 
+            // columnHeader1
+            // 
+            columnHeader1.Text = "Name";
+            columnHeader1.Width = 95;
+            // 
+            // columnHeader2
+            // 
+            columnHeader2.Text = "Column";
+            columnHeader2.Width = 95;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(552, 339);
+            Controls.Add(nameListview);
             Controls.Add(clearField);
-            Controls.Add(label6);
-            Controls.Add(label5);
-            Controls.Add(nameListbox);
             Controls.Add(definitionTextbox);
             Controls.Add(openBtn);
             Controls.Add(saveBtn);
@@ -261,7 +247,6 @@
             Controls.Add(categoryTextbox);
             Controls.Add(structureTextbox);
             Controls.Add(nameTextbox);
-            Controls.Add(categoryListbox);
             Controls.Add(search);
             Controls.Add(searchTextbox);
             Controls.Add(addBtn);
@@ -283,7 +268,6 @@
         private TextBox searchTextbox;
         private Button search;
         private SaveFileDialog saveFileDialog1;
-        private ListBox categoryListbox;
         private TextBox nameTextbox;
         private TextBox structureTextbox;
         private TextBox categoryTextbox;
@@ -293,11 +277,11 @@
         private Label label4;
         private Button saveBtn;
         private Button openBtn;
-        private ListBox nameListbox;
         private TextBox definitionTextbox;
         private SaveFileDialog saveFileDialog2;
-        private Label label5;
-        private Label label6;
         private Button clearField;
+        private ListView nameListview;
+        private ColumnHeader columnHeader1;
+        private ColumnHeader columnHeader2;
     }
 }

@@ -1,31 +1,34 @@
+using System.CodeDom.Compiler;
+using System.Security.Cryptography.X509Certificates;
 namespace Wiki_devel
 {
     public partial class Form1 : Form
     {
+        public string[,] dataSet;
+        static int rows = 12;
+        static int columns = 4;
+
         public Form1()
         {
             InitializeComponent();
-            int arrayRows = data.dataSet.GetLength(0);
-            int arrayColumns = data.dataSet.GetLength(1);
-            for (int i = 0; i < arrayRows; i++)
+            dataSet = new string[rows, columns];
+            for (int i = 0; i < rows; i++)
             {
-                for (int j = 0; j < arrayColumns; j++)
+                for (int j = 0; j < columns; j++)
                 {
-                    data.dataSet[i, j] = "~"; // Creates the default string values in the 2D array as "~"
+                    dataSet[i, j] = "~"; // Creates the default string values in the 2D array as "~"
                 }
             }
         }
-        Data data = new Data();
-        int arraySize = 12;
 
         //9.2 Create an add button that will store the information from the 4 text boxes into the 2D array
         private void add_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < arraySize; i++)
-            {
-                if (data.dataSet[i, 0] == "~")
-                {
 
+            for (int i = 0; i < rows; i++)
+            {
+                if (dataSet[i, 0] == "~")
+                {
                     if (nameTextbox.Text == "" | structureTextbox.Text == "" | categoryTextbox.Text == "" | definitionTextbox.Text == "")
                     {
                         MessageBox.Show("Please fill out all fields before adding to the Dictionary");
@@ -33,42 +36,62 @@ namespace Wiki_devel
                     }
                     else
                     {
-                        data.dataSet[i, 0] = nameTextbox.Text.ToLower(); // Adds name data to the array
-                        data.dataSet[i, 1] = categoryTextbox.Text; // Adds category data to the array
-                        data.dataSet[i, 2] = structureTextbox.Text; // Adds structure data to the array
-                        data.dataSet[i, 3] = definitionTextbox.Text; // Adds definition data to the array
-
+                        dataSet[i, 0] = nameTextbox.Text.ToLower(); // Adds name data to the array
+                        dataSet[i, 1] = categoryTextbox.Text; // Adds category data to the array
+                        dataSet[i, 2] = structureTextbox.Text; // Adds structure data to the array
+                        dataSet[i, 3] = definitionTextbox.Text; // Adds definition data to the array
                         //9.8 Create a display method that will show the following information in a listview, Name and category
-                        nameListbox.Items.Add(data.dataSet[i, 0]);
-                        categoryListbox.Items.Add(data.dataSet[i, 1].ToUpper());
+                        if (dataSet[i, 0 ] == "~")
+                        {
+                            continue;
+                        }
+
+
+
+                        ListViewItem item = new ListViewItem(dataSet[i, 0]);
+                        item.SubItems.Add(dataSet[i, 1]);
+                        nameListview.Items.Add(item);
+
+                        bubbleSort();
+                        nameListview.Refresh();
 
                         // Resets the Textbox fields so new data can be added
                         nameTextbox.Clear();
                         categoryTextbox.Clear();
                         structureTextbox.Clear();
                         definitionTextbox.Clear();
-                        break;
+                        return;
                     }
                 }
-
             }
         }
+
+        //9.8 Create a display method that will show the following information in a listview, Name and category
+
+        //ListViewItem item = new ListViewItem(dataSet[i, 0]);
+        //item.SubItems.Add(dataSet[i, 1]);
+        //nameListview.Items.Add(item);
+
+        // Resets the Textbox fields so new data can be added
+
+
         // 9.9 Create a method so the user can select a definition (Name) from the Listview and all the information is displayed in the appropriate textboxes
-        private void nameListbox_SelectedIndexChanged(object sender, EventArgs e) // Lists the items from nameListbox to the add fields, can't be edited
+        private void nameListview_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (nameListbox.SelectedItem != null)
+            nameListview.MultiSelect = false;
+            ListViewItem selectedItem = nameListview.SelectedItems.Count > 0 ? nameListview.SelectedItems[0] : null;
+            if (selectedItem != null)
+
+
             {
-                var nameString = nameListbox.SelectedItem;
-                for (int i = 0; i < arraySize; i++)
+                for (int i = 0; i < rows; i++)
                 {
-                    if (data.dataSet[i, 0] == (string)nameString)
+                    if (dataSet[i, 0] == selectedItem.Text)
                     {
-                        // Gives the index of the nameListbox - needed as we have a 2D array
-                        //Displays the information in the categorised Textboxes
-                        nameTextbox.Text = data.dataSet[i, 0];
-                        categoryTextbox.Text = data.dataSet[i, 1];
-                        structureTextbox.Text = data.dataSet[i, 2];
-                        definitionTextbox.Text = data.dataSet[i, 3];
+                        nameTextbox.Text = dataSet[i, 0];
+                        categoryTextbox.Text = dataSet[i, 1];
+                        structureTextbox.Text = dataSet[i, 2];
+                        definitionTextbox.Text = dataSet[i, 3];
                     }
                 }
             }
@@ -76,60 +99,69 @@ namespace Wiki_devel
         // 9.4 Create a delete button that removes all the information from a single entry of the array; the user must be prompted before the final deletion occurs
         private void deleteBtn_Click(object sender, EventArgs e)
         {
-            if (nameTextbox.Text != "" | structureTextbox.Text != "" | categoryTextbox.Text != "" | definitionTextbox.Text != "")
+            if (nameListview.SelectedItems.Count != 0 | nameTextbox.Text != "" | structureTextbox.Text != "" | categoryTextbox.Text != "" | definitionTextbox.Text != "")
             {
                 DialogResult confirmation = MessageBox.Show("Are you sure you want to delete these values?", "Delete confirmation", MessageBoxButtons.YesNo);
                 switch (confirmation)
                 {
                     case DialogResult.Yes:
-                        if (nameListbox.SelectedIndex > -1)
+                        if (nameListview.SelectedItems[0] != null)
                         {
-                            int selectedIndex = nameListbox.SelectedIndex;
-                            categoryListbox.Items.RemoveAt(nameListbox.SelectedIndex);
-                            nameListbox.Items.RemoveAt(nameListbox.SelectedIndex);
+                            int selectedIndex = nameListview.SelectedIndices[0];
+                            nameListview.Items.RemoveAt(selectedIndex);
 
                             nameTextbox.Text = "";
                             categoryTextbox.Text = "";
                             structureTextbox.Text = "";
                             definitionTextbox.Text = "";
 
-                            data.dataSet[selectedIndex, 0] = "~";
-                            data.dataSet[selectedIndex, 1] = "~";
-                            data.dataSet[selectedIndex, 2] = "~";
-                            data.dataSet[selectedIndex, 3] = "~";
+                            dataSet[selectedIndex, 0] = "~";
+                            dataSet[selectedIndex, 1] = "~";
+                            dataSet[selectedIndex, 2] = "~";
+                            dataSet[selectedIndex, 3] = "~";
+
+                            bubbleSort();
                         }
                         break;
                     case DialogResult.No:
                         break;
                 }
             }
+            else
+            {
+                MessageBox.Show("There is no data selected! Please select data from the listview", "Delete error", MessageBoxButtons.OK);
+            }
         }
         // 9.3 Create an Edit button that will allow the user to modify any information from the four text boxes into the 2D array
-        private void editBtn_Click(object sender, EventArgs e)
+        private void editBtn_Click_1(object sender, EventArgs e)
         {
-            if (nameListbox.SelectedIndex < 0)
+            if (nameListview.SelectedItems.Count == 0)
             {
                 MessageBox.Show("There is no data selected!", "Edit error", MessageBoxButtons.OK);
             }
             else
             {
-                int nameIndex = nameListbox.SelectedIndex;
+                int nameIndex = nameListview.SelectedIndices[0];
 
-                data.dataSet[nameIndex, 0] = nameTextbox.Text;
-                data.dataSet[nameIndex, 1] = categoryTextbox.Text;
-                data.dataSet[nameIndex, 2] = structureTextbox.Text;
-                data.dataSet[nameIndex, 3] = definitionTextbox.Text;
+                dataSet[nameIndex, 0] = nameTextbox.Text;
+                dataSet[nameIndex, 1] = categoryTextbox.Text;
+                dataSet[nameIndex, 2] = structureTextbox.Text;
+                dataSet[nameIndex, 3] = definitionTextbox.Text;
 
                 // 9.8 Create a display method that will show the following information in a listview, Name and category
-                nameListbox.Items[nameIndex] = nameTextbox.Text.ToLower();
-                categoryListbox.Items[nameIndex] = categoryTextbox.Text.ToLower();
+                nameListview.Items[nameIndex].Text = dataSet[nameIndex, 0];
+
+                bubbleSort();
 
                 nameTextbox.Text = "";
                 categoryTextbox.Text = "";
                 structureTextbox.Text = "";
                 definitionTextbox.Text = "";
+                nameListview.SelectedItems.Clear(); // Deselects current value in the nameListview
+
             }
         }
+
 
         // 9.5 Create a clear method to clear the four text boxes so a new definition can be added
         private void clearField_Click(object sender, EventArgs e)
@@ -138,6 +170,7 @@ namespace Wiki_devel
             categoryTextbox.Text = "";
             structureTextbox.Text = "";
             definitionTextbox.Text = "";
+            nameListview.SelectedItems.Clear(); // Deselects current value in the nameListview
         }
         private void searchTextbox_DoubleClick(object sender, EventArgs e)
         {
@@ -146,119 +179,168 @@ namespace Wiki_devel
             categoryTextbox.Text = "";
             structureTextbox.Text = "";
             definitionTextbox.Text = "";
+            nameListview.SelectedItems.Clear(); // Deselects current value in the nameListview
+
         }
         // 9.10 Create a save button so information from the 2D array can be written into a binary file called definitions.dat
         // which is sorted by Name, ensure the user has the option to save it as an alternative file.
         // Use a file stream and BinaryWriter to create this file.
         private void saveBtn_Click(object sender, EventArgs e)
         {
-            int arrayRows = 12;
-            int arrayColumns = 4;
+
 
             SaveFileDialog saveFile = new SaveFileDialog(); // Opens windows directory
             saveFile.Filter = "dat files (*.dat)|*.dat";
             saveFile.Title = "Save File";
             saveFile.FileName = "definitions.dat"; // binary file definitons.dat
 
+
             if (saveFile.ShowDialog() == DialogResult.OK)
             {
                 string filePath = saveFile.FileName;
-
                 try
                 {
-                    using (FileStream fs = new FileStream(filePath, FileMode.Create))
-                    using (BinaryWriter bw = new BinaryWriter(fs))
+                    FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write);
+                    BinaryWriter bw = new BinaryWriter(fs);
                     {
-                        int rows = data.dataSet.GetLength(0);
-                        int columns = data.dataSet.GetLength(1);
-
-                        bw.Write(rows);
-                        bw.Write(columns);
-
-                        for (int i = 0; i < arrayRows; i++)
+                        for (int i = 0; i < rows; i++)
                         {
-                            for (int j = 0; j < arrayColumns; j++)
+                            for (int j = 0; j < columns; j++)
                             {
-                                bw.Write(data.dataSet[i, j]);
+                                bw.Write(dataSet[i, j]);
                             }
                         }
                     }
+                    bw.Close();
+                    fs.Close();
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"An error has occured: {ex.Message}", "Error", MessageBoxButtons.OK);
                 }
             }
+
         }
 
         // 9.11 Create a load button that will read information from a binary file called definitions.dat into the 2D array
         // ensure the user has the option to select an alternative file. Use a file stream and BinaryReader to complete this task.
         private void openBtn_Click(object sender, EventArgs e)
         {
-            int arrayRows = 12;
-            int arrayColumns = 4;
-
             OpenFileDialog openFile = new OpenFileDialog();
             openFile.Filter = "dat files (*.dat)|*.dat";
             openFile.Title = "Open File";
 
             if (openFile.ShowDialog() == DialogResult.OK)
             {
-
-                // Clears all currently filled fields 
-                nameListbox.Items.Clear();
-                categoryListbox.Items.Clear();
-
-                searchTextbox.Clear();
-
-                nameTextbox.Clear();
-                categoryTextbox.Clear();
-                structureTextbox.Clear();
-                definitionTextbox.Clear();
-
                 string filePath = openFile.FileName;
-
                 try
                 {
-                    using (FileStream fs = new FileStream(filePath, FileMode.Open))
-                    using (BinaryReader br = new BinaryReader(fs))
+                    FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                    BinaryReader br = new BinaryReader(fs);
+                    nameListview.Items.Clear();
+                    for (int i = 0; i < rows; i++)
                     {
-
-                        for (int i = 0; i < arrayRows; i++)
+                        for (int j = 0; j < columns; j++)
                         {
-                            for (int j = 0; j < arrayColumns; j++)
-                            {
-                                data.dataSet[i, j] = br.ReadString();
-                            }
-                            if (data.dataSet[i, 0] == "~") // skips our default string value
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                //9.8 Create a display method that will show the following information in a listview, Name and category
-                                nameListbox.Items.Add(data.dataSet[i, 0]);
-                                categoryListbox.Items.Add(data.dataSet[i, 1]);
-                            }
-
+                            dataSet[i, j] = br.ReadString();
                         }
+                        if (dataSet[i, 0] == "~")
+                        {
+                            continue;
+                        }
+
+                        ListViewItem item = new ListViewItem(dataSet[i, 0]);
+                        item.SubItems.Add(dataSet[i, 1]);
+                        nameListview.Items.Add(item);
+
                     }
+
+
+                    br.Close();
+                    fs.Close();
+                    bubbleSort();
                 }
+
                 catch (Exception ex)
                 {
                     MessageBox.Show($"An error has occured: {ex.Message}", "Error", MessageBoxButtons.OK); // displays error if opening file fails
                 }
-
             }
         }
         // 9.7 Write code for a Binary search for the Name in the 2D array and display the information in the other textboxes when found
         // Add suitable feedback if the search failed, and clear the search textbox (Do not use built in array methods)
         private void search_Click(object sender, EventArgs e)
         {
+            if (!string.IsNullOrEmpty(searchTextbox.Text) && searchTextbox.Text != "~")
+            {
+                bool found = false;
+                int min = 0;
+                int max = 11;
 
+                string key = searchTextbox.Text;
+
+
+                while (min <= max)
+                {
+                    int mid = ((min + max) / 2);
+                    if (key == dataSet[mid, 0])
+                    {
+                        found = true;
+                        nameTextbox.Text = dataSet[mid, 0];
+                        categoryTextbox.Text = dataSet[mid, 1];
+                        structureTextbox.Text = dataSet[mid, 2];
+                        definitionTextbox.Text = dataSet[mid, 3];
+                        break;
+                    }
+                    else if (key.CompareTo(dataSet[mid, 0]) < 0)
+                    {
+                        max = mid - 1;
+                    }
+                    else
+                    {
+                        min = mid + 1;
+                    }
+                }
+                if (!found)
+                {
+                    MessageBox.Show("Value not found", "Not Found");
+                }
+                searchTextbox.Clear();
+            }
+            else
+            {
+                MessageBox.Show("Value not found", "Not Found");
+            }
         }
+
+
         // 9.6 Write code for a Bubble sort method to sort the 2D array by name ascending order
         // ensure to use a seperate swap method that passes the array element to be swapped
         // Do not use any built-in array methods.
+        private void bubbleSort()
+        {
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < rows - i - 1; j++)
+                {
+                    if (dataSet[j + 1, 0] == "~")
+                    {
+                        if (string.Compare(dataSet[j, 0], dataSet[j + 1, 0]) > 0)
+                        {
+                            Swap(j);
+                        }
+                    }
+                }
+            }
+        }
+        private void Swap(int row)
+        {
+            for (int i = 0; i < columns; i++)
+            {
+                string temp = dataSet[row, i];
+                dataSet[row, i] = dataSet[row + 1, i];
+                dataSet[row + 1, i] = temp;
+            }
+        }
     }
 }
