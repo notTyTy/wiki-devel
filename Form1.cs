@@ -226,7 +226,6 @@ namespace Wiki_devel
                 structureTextbox.Clear();
                 definitionTextbox.Clear();
 
-                bubbleSort();
                 bool found = false;
                 int min = 0;
                 int max = 11;
