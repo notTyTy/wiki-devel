@@ -97,7 +97,6 @@
             searchTextbox.Name = "searchTextbox";
             searchTextbox.Size = new Size(144, 23);
             searchTextbox.TabIndex = 9;
-            searchTextbox.DoubleClick += searchTextbox_DoubleClick;
             // 
             // search
             // 
@@ -227,7 +226,7 @@
             // 
             // columnHeader2
             // 
-            columnHeader2.Text = "Column";
+            columnHeader2.Text = "Category";
             columnHeader2.Width = 95;
             // 
             // Form1
