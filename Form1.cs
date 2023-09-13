@@ -112,7 +112,7 @@ namespace Wiki_devel
             }
             else
             {
-                MessageBox.Show("There is no data selected! Please select data from the list", "No Data Selected" MessageBoxButtons.OK);
+                MessageBox.Show("There is no data selected! Please select data from the list", "No Data Selected", MessageBoxButtons.OK);
             }
         }
         // 9.3 Create an Edit button that will allow the user to modify any information from the four text boxes into the 2D array
@@ -228,12 +228,12 @@ namespace Wiki_devel
                 int min = 0;
                 int max = 11;
 
-                string key = searchTextbox.Text;
+                string key = searchTextbox.Text.ToLower();
 
                 while (!found && min <= max)
                 {
                     int mid = (min + max) / 2;
-                    if (key == dataSet[mid, 0])
+                    if (key == dataSet[mid, 0].ToLower())
                     {
                         found = true;
                         nameTextbox.Text = dataSet[mid, 0];
