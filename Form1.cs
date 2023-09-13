@@ -1,6 +1,7 @@
 using System.CodeDom.Compiler;
 using System.Diagnostics.Eventing.Reader;
-using System.Security.Cryptography.X509Certificates;
+using System.Globalization;
+
 namespace Wiki_devel
 {
     public partial class Form1 : Form
@@ -24,30 +25,31 @@ namespace Wiki_devel
         //9.2 Create an add button that will store the information from the 4 text boxes into the 2D array
         private void add_Click(object sender, EventArgs e)
         {
+            if (!String.IsNullOrEmpty(dataSet[0, 0])) // Empty String is sorted to the beginning of the array
+            {
+                MessageBox.Show("The array is full!", "Full Array", MessageBoxButtons.OK);
+            }
             for (int i = 0; i < rows; i++)
             {
                 if (String.IsNullOrEmpty(dataSet[i, 0]))
                 {
                     if (nameTextbox.Text == "" | structureTextbox.Text == "" | categoryTextbox.Text == "" | definitionTextbox.Text == "")
                     {
-                        MessageBox.Show("Please fill out all fields before adding to the Dictionary");
+                        MessageBox.Show("Please fill out all fields before adding to the Dictionary", "Empty Fields", MessageBoxButtons.OK);
                         break;
                     }
                     else
                     {
-                        dataSet[i, 0] = nameTextbox.Text.ToLower(); // Adds name data to the array
-                        dataSet[i, 1] = categoryTextbox.Text; // Adds category data to the array
-                        dataSet[i, 2] = structureTextbox.Text; // Adds structure data to the array
+                        TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
+
+                        dataSet[i, 0] = textInfo.ToTitleCase(nameTextbox.Text); // Adds name data to the array
+                        dataSet[i, 1] = textInfo.ToTitleCase(categoryTextbox.Text); // Adds category data to the array
+                        dataSet[i, 2] = textInfo.ToTitleCase(structureTextbox.Text); // Adds structure data to the array
                         dataSet[i, 3] = definitionTextbox.Text; // Adds definition data to the array
 
                         //9.8 Create a display method that will show the following information in a listview, Name and category
-                        Refresh();
-
-                        // Resets the Textbox fields so new data can be added
-                        nameTextbox.Clear();
-                        categoryTextbox.Clear();
-                        structureTextbox.Clear();
-                        definitionTextbox.Clear();
+                        RefreshData();
+                        Clear();
                         return;
                     }
                 }
@@ -68,6 +70,7 @@ namespace Wiki_devel
                         categoryTextbox.Text = dataSet[i, 1];
                         structureTextbox.Text = dataSet[i, 2];
                         definitionTextbox.Text = dataSet[i, 3];
+                        break;
                     }
                 }
             }
@@ -77,34 +80,39 @@ namespace Wiki_devel
         {
             if (nameListview.SelectedItems.Count != 0 | nameTextbox.Text != "" | structureTextbox.Text != "" | categoryTextbox.Text != "" | definitionTextbox.Text != "")
             {
-                DialogResult confirmation = MessageBox.Show("Are you sure you want to delete these values?", "Delete confirmation", MessageBoxButtons.YesNo);
+                DialogResult confirmation = MessageBox.Show("Are you sure you want to delete these values?", "Delete Confirmation", MessageBoxButtons.YesNo);
                 switch (confirmation)
                 {
                     case DialogResult.Yes:
-                        if (nameListview.SelectedItems[0] != null)
+
+                        nameListview.MultiSelect = false;
+                        int selectedIndex = nameListview.SelectedIndices[0];
+                        ListViewItem selectedItem = nameListview.SelectedItems.Count > 0 ? nameListview.SelectedItems[0] : null;
+                        if (selectedItem != null)
                         {
-                            int selectedIndex = nameListview.SelectedIndices[0];
-                            nameListview.Items.RemoveAt(selectedIndex);
-
-                            nameTextbox.Text = "";
-                            categoryTextbox.Text = "";
-                            structureTextbox.Text = "";
-                            definitionTextbox.Text = "";
-
-                            dataSet[selectedIndex, 0] = "";
-                            dataSet[selectedIndex, 1] = "";
-                            dataSet[selectedIndex, 2] = "";
-                            dataSet[selectedIndex, 3] = "";
-                            Refresh();
+                            for (int i = 0; i < rows; i++)
+                            {
+                                if (dataSet[i, 0] == selectedItem.Text)
+                                {
+                                    dataSet[i, 0] = "";
+                                    dataSet[i, 1] = "";
+                                    dataSet[i, 2] = "";
+                                    dataSet[i, 3] = "";
+                                    nameListview.Items.RemoveAt(selectedIndex);
+                                    Clear();
+                                    break;
+                                }
+                            }
                         }
+                        RefreshData();
                         break;
                     case DialogResult.No:
-                        break;
+                        return;
                 }
             }
             else
             {
-                MessageBox.Show("There is no data selected! Please select data from the listview", "Delete error", MessageBoxButtons.OK);
+                MessageBox.Show("There is no data selected! Please select data from the list", "No Data Selected" MessageBoxButtons.OK);
             }
         }
         // 9.3 Create an Edit button that will allow the user to modify any information from the four text boxes into the 2D array
@@ -127,22 +135,15 @@ namespace Wiki_devel
                 dataSet[nameIndex, 2] = structureTextbox.Text;
                 dataSet[nameIndex, 3] = definitionTextbox.Text;
                 // 9.8 Create a display method that will show the following information in a listview, Name and category
-                Refresh();
-
-                nameTextbox.Text = "";
-                categoryTextbox.Text = "";
-                structureTextbox.Text = "";
-                definitionTextbox.Text = "";
+                RefreshData();
+                Clear();
                 nameListview.SelectedItems.Clear(); // Deselects current value in the nameListview
             }
         }
         // 9.5 Create a clear method to clear the four text boxes so a new definition can be added
         private void clearField_Click(object sender, EventArgs e)
         {
-            nameTextbox.Text = "";
-            categoryTextbox.Text = "";
-            structureTextbox.Text = "";
-            definitionTextbox.Text = "";
+            Clear();
             nameListview.SelectedItems.Clear(); // Deselects current value in the nameListview
         }
         // 9.10 Create a save button so information from the 2D array can be written into a binary file called definitions.dat
@@ -203,13 +204,13 @@ namespace Wiki_devel
                             dataSet[i, j] = br.ReadString();
                         }
                     }
-                    Refresh();
+                    RefreshData();
                     br.Close();
                     fs.Close();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"An error has occured: {ex.Message}", "Error", MessageBoxButtons.OK); // displays error if opening file fails
+                    MessageBox.Show($"An error has occured: {ex.Message}", "Error", MessageBoxButtons.OK); // Displays error if opening file fails
                 }
             }
         }
@@ -217,16 +218,13 @@ namespace Wiki_devel
         // Add suitable feedback if the search failed, and clear the search textbox (Do not use built in array methods)
         private void search_Click(object sender, EventArgs e)
         {
-            searchTextbox.Focus();
+            searchTextbox.Focus(); // Focuses the textbox after every search
 
             if (!string.IsNullOrEmpty(searchTextbox.Text))
             {
-                nameTextbox.Clear();
-                categoryTextbox.Clear();
-                structureTextbox.Clear();
-                definitionTextbox.Clear();
+                Clear();
 
-                bool found = false;
+                bool found = false; // If true, breaks out of the while loop
                 int min = 0;
                 int max = 11;
 
@@ -245,7 +243,7 @@ namespace Wiki_devel
                         searchTextbox.Clear();
                         break;
                     }
-                    else if (key.CompareTo(dataSet[mid, 0]) > 0)
+                    else if (key.CompareTo(dataSet[mid, 0]) > 0) // compares only if dataSet[i, 0] != searchInput.Text
                     {
                         min = mid + 1;
                     }
@@ -261,11 +259,15 @@ namespace Wiki_devel
                     return;
                 }
             }
+            else
+            {
+                MessageBox.Show("Please input a value to search", "Empty Search Value", MessageBoxButtons.OK);
+            }
         }
         // 9.6 Write code for a Bubble sort method to sort the 2D array by name ascending order
         // ensure to use a seperate swap method that passes the array element to be swapped
         // Do not use any built-in array methods.
-        private void bubbleSort()
+        private void bubbleSort() // Iterates through the first column of my dataset and compares string values
         {
             for (int i = 0; i < rows; i++)
             {
@@ -278,7 +280,7 @@ namespace Wiki_devel
                 }
             }
         }
-        private void Swap(int row)
+        private void Swap(int row) // Simple swap method to sort strings alphabetically
         {
             for (int i = 0; i < columns; i++)
             {
@@ -287,7 +289,7 @@ namespace Wiki_devel
                 dataSet[row + 1, i] = temp;
             }
         }
-        private void Refresh()
+        private void RefreshData() // Loops through the array updating the listview with updated array data
         {
             bubbleSort();
             nameListview.Clear();
@@ -296,14 +298,21 @@ namespace Wiki_devel
 
             for (int i = 0; i < rows; i++)
             {
-                if (dataSet[i, 0] == "")
+                if (!String.IsNullOrEmpty(dataSet[i, 0]))
                 {
-                    continue;
+                    ListViewItem item = new ListViewItem(dataSet[i, 0]);
+                    item.SubItems.Add(dataSet[i, 1]);
+                    nameListview.Items.Add(item);
+
                 }
-                ListViewItem item = new ListViewItem(dataSet[i, 0]);
-                item.SubItems.Add(dataSet[i, 1]);
-                nameListview.Items.Add(item);
             }
+        }
+        private void Clear() // Clears the Text fields so new data can be added or viewed
+        {
+            nameTextbox.Clear();
+            categoryTextbox.Clear();
+            structureTextbox.Clear();
+            definitionTextbox.Clear();
         }
     }
 }
