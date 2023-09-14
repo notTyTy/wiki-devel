@@ -68,7 +68,7 @@
             deleteBtn.TabIndex = 2;
             deleteBtn.Text = "Delete";
             deleteBtn.UseVisualStyleBackColor = true;
-            deleteBtn.Click += deleteBtn_Click;
+            deleteBtn.Click += DeleteBtn_Click;
             // 
             // editBtn
             // 
@@ -78,7 +78,7 @@
             editBtn.TabIndex = 3;
             editBtn.Text = "Edit";
             editBtn.UseVisualStyleBackColor = true;
-            editBtn.Click += editBtn_Click_1;
+            editBtn.Click += EditBtn_Click_1;
             // 
             // addBtn
             // 
@@ -89,7 +89,7 @@
             addBtn.TabIndex = 4;
             addBtn.Text = "Add";
             addBtn.UseVisualStyleBackColor = true;
-            addBtn.Click += add_Click;
+            addBtn.Click += Add_Click;
             // 
             // searchTextbox
             // 
@@ -106,7 +106,7 @@
             search.TabIndex = 10;
             search.Text = "Search";
             search.UseVisualStyleBackColor = true;
-            search.Click += search_Click;
+            search.Click += Search_Click;
             // 
             // nameTextbox
             // 
@@ -173,7 +173,7 @@
             saveBtn.TabIndex = 24;
             saveBtn.Text = "Save";
             saveBtn.UseVisualStyleBackColor = true;
-            saveBtn.Click += saveBtn_Click;
+            saveBtn.Click += SaveBtn_Click;
             // 
             // openBtn
             // 
@@ -183,7 +183,7 @@
             openBtn.TabIndex = 25;
             openBtn.Text = "Open";
             openBtn.UseVisualStyleBackColor = true;
-            openBtn.Click += openBtn_Click;
+            openBtn.Click += OpenBtn_Click;
             // 
             // definitionTextbox
             // 
@@ -201,7 +201,7 @@
             clearField.TabIndex = 30;
             clearField.Text = "Clear Fields";
             clearField.UseVisualStyleBackColor = true;
-            clearField.Click += clearField_Click;
+            clearField.Click += ClearField_Click;
             // 
             // nameListview
             // 
@@ -217,7 +217,7 @@
             nameListview.TabIndex = 31;
             nameListview.UseCompatibleStateImageBehavior = false;
             nameListview.View = View.Details;
-            nameListview.SelectedIndexChanged += nameListview_SelectedIndexChanged;
+            nameListview.SelectedIndexChanged += NameListview_SelectedIndexChanged;
             // 
             // columnHeader1
             // 
